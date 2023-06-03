@@ -89,6 +89,18 @@ contract Contract is ERC721 {
         emit Minted(msg.sender, currentId, cid);
     }
 
+    /**
+     * @notice Update token CID
+     * @param tokenId token id
+     * @param cid cid of the token
+     */
+    function setTokenURI(uint256 tokenId, string memory cid) public {
+        _requireMinted(tokenId);
+        // require user to be owner
+        require(ownerOf(tokenId) == msg.sender, "Not owner");
+        tokenIdToUri[tokenId] = cid;
+    }
+
     function burn(uint256 tokenId) public {
         _burn(tokenId);
     }
