@@ -7,9 +7,9 @@ module.exports = async ({ getNamedAccounts, deployments, getChainId }: any) => {
   const { deployer } = await getNamedAccounts();
   const chainId = await getChainId();
 
-  let WORLD_ID = ''; // TODO
-  let APP_ID = ''; // TODO
-  let ACTION_ID = ''; // TODO
+  let WORLD_ID = '0xABB70f7F39035586Da57B3c8136035f87AC0d2Aa'; // TODO
+  let APP_ID = 'app_staging_80251b57de090b576b3c8c1d0eab9cfd'; // TODO
+  let ACTION_ID = 'Sign In WorldID'; // TODO
 
   let contract = await deploy('Contract', {
     from: deployer,

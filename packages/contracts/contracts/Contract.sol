@@ -29,6 +29,8 @@ contract Contract is ERC721 {
 
     mapping(uint256 => string) internal tokenIdToUri;
 
+    event Minted(address indexed to, uint256 indexed tokenId, string ipfsHash);
+
     /// @param _worldId The WorldID instance that will verify the proofs
     /// @param _appId The World ID app ID
     /// @param _actionId The World ID action ID
@@ -41,14 +43,14 @@ contract Contract is ERC721 {
     /// @param root The root of the Merkle tree (returned by the JS widget).
     /// @param nullifierHash The nullifier hash for this proof, preventing double signaling (returned by the JS widget).
     /// @param proof The zero-knowledge proof that demonstrates the claimer is registered with World ID (returned by the JS widget).
-    /// @param ipfsHash The IPFS hash of the content to be minted
+    /// @param cid The IPFS hash of the content to be minted
     /// @dev Feel free to rename this method however you want! We've used `claim`, `verify` or `execute` in the past.
-    function verifyAndExecute(
+    function mint(
         address signal,
         uint256 root,
         uint256 nullifierHash,
         uint256[8] calldata proof,
-        string memory ipfsHash
+        string memory cid
     ) public {
         // First, we make sure this person hasn't done this before
         if (nullifierHashes[nullifierHash]) revert InvalidNullifier();
@@ -68,13 +70,23 @@ contract Contract is ERC721 {
 
         // Finally, execute your logic here, for example issue a token, NFT, etc...
         // Make sure to emit some kind of event afterwards!
-        mint();
-        tokenIdToUri[currentId] = ipfsHash;
-    }
 
-    function mint() private {
         _mint(msg.sender, currentId);
         currentId++;
+        tokenIdToUri[currentId] = cid;
+
+        emit Minted(msg.sender, currentId, cid);
+    }
+
+    /// @notice Mint a NFT without WORLD ID Verification
+    /// @param cid The IPFS hash of the content to be minted
+    /// @dev Feel free to rename this method however you want! We've used `claim`, `verify` or `execute` in the past.
+    function devMint(string memory cid) public {
+        _mint(msg.sender, currentId);
+        currentId++;
+        tokenIdToUri[currentId] = cid;
+
+        emit Minted(msg.sender, currentId, cid);
     }
 
     function burn(uint256 tokenId) public {

@@ -90,6 +90,8 @@ module.exports = {
       mining: {
         auto: true,
       },
+      // account: [PRIVATE_KEY],
+
       accounts: ACCOUNT,
     },
     mainnet: {

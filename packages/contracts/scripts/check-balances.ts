@@ -1,7 +1,7 @@
 import { config, ethers, hardhatArguments } from 'hardhat';
 
 async function main() {
-  const chains = ['mumbai', 'goerli', 'gnosis', 'optimism_testnet', 'taiko_testnet', 'scroll_testnet'];
+  const chains = ['mumbai'];
   const [deployer] = await ethers.getSigners();
   const address = await deployer.getAddress();
   console.log(`Balances for ${address}`);
