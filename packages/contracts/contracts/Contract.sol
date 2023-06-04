@@ -73,9 +73,9 @@ contract Contract is ERC721 {
         // Make sure to emit some kind of event afterwards!
 
         _mint(msg.sender, currentId);
+        addressToTokenId[msg.sender] = currentId;
         currentId++;
         tokenIdToUri[currentId] = cid;
-        addressToTokenId[msg.sender] = currentId;
 
         emit Minted(msg.sender, currentId, cid);
     }
@@ -85,9 +85,9 @@ contract Contract is ERC721 {
     /// @dev Feel free to rename this method however you want! We've used `claim`, `verify` or `execute` in the past.
     function devMint(string memory cid) public {
         _mint(msg.sender, currentId);
+        addressToTokenId[msg.sender] = currentId;
         currentId++;
         tokenIdToUri[currentId] = cid;
-        addressToTokenId[msg.sender] = currentId;
 
         emit Minted(msg.sender, currentId, cid);
     }
