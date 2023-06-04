@@ -28,6 +28,7 @@ contract Contract is ERC721 {
     uint256 currentId = 1;
 
     mapping(uint256 => string) internal tokenIdToUri;
+    mapping(address => uint256) internal addressToTokenId;
 
     event Minted(address indexed to, uint256 indexed tokenId, string ipfsHash);
 
@@ -74,6 +75,7 @@ contract Contract is ERC721 {
         _mint(msg.sender, currentId);
         currentId++;
         tokenIdToUri[currentId] = cid;
+        addressToTokenId[msg.sender] = currentId;
 
         emit Minted(msg.sender, currentId, cid);
     }
@@ -85,6 +87,7 @@ contract Contract is ERC721 {
         _mint(msg.sender, currentId);
         currentId++;
         tokenIdToUri[currentId] = cid;
+        addressToTokenId[msg.sender] = currentId;
 
         emit Minted(msg.sender, currentId, cid);
     }
@@ -99,6 +102,19 @@ contract Contract is ERC721 {
         // require user to be owner
         require(ownerOf(tokenId) == msg.sender, "Not owner");
         tokenIdToUri[tokenId] = cid;
+    }
+
+    /**
+     * @notice Update token CID
+     * @param userAddress token id
+     * @param cid cid of the token
+     */
+    function setTokenURI(address userAddress, string memory cid) public {
+        uint256 _tokenId = addressToTokenId[userAddress];
+        _requireMinted(_tokenId);
+        // require user to be owner
+        require(ownerOf(_tokenId) == msg.sender, "Not owner");
+        tokenIdToUri[_tokenId] = cid;
     }
 
     function burn(uint256 tokenId) public {
@@ -117,7 +133,6 @@ contract Contract is ERC721 {
     function tokenURI(uint256 tokenId) public view virtual override returns (string memory) {
         _requireMinted(tokenId);
 
-        string memory baseURI = _baseURI();
-        return bytes(baseURI).length > 0 ? string(abi.encodePacked("ipfs://", tokenIdToUri[tokenId])) : "";
+        return string(abi.encodePacked("ipfs://", tokenIdToUri[tokenId]));
     }
 }
