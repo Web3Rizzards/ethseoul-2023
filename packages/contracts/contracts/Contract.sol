@@ -74,8 +74,8 @@ contract Contract is ERC721 {
 
         _mint(msg.sender, currentId);
         addressToTokenId[msg.sender] = currentId;
-        currentId++;
         tokenIdToUri[currentId] = cid;
+        currentId++;
 
         emit Minted(msg.sender, currentId, cid);
     }
@@ -86,8 +86,8 @@ contract Contract is ERC721 {
     function devMint(string memory cid) public {
         _mint(msg.sender, currentId);
         addressToTokenId[msg.sender] = currentId;
-        currentId++;
         tokenIdToUri[currentId] = cid;
+        currentId++;
 
         emit Minted(msg.sender, currentId, cid);
     }
