@@ -200,6 +200,7 @@ module.exports = {
       chainId: 10200,
       accounts: ACCOUNT,
       saveDeployments: true,
+      gasPrice: 30,
     },
     sepolia: {
       url: 'https://rpc.sepolia.org',
